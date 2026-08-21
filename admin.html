@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Gaming Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto space-y-8">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center bg-slate-800 p-6 rounded-xl border border-slate-700">
+            <div>
+                <h1 class="text-2xl font-bold text-white">Admin Dashboard</h1>
+                <p class="text-xs text-slate-400">Eingeloggt als: <strong class="text-yellow-500">Reblix</strong></p>
+            </div>
+            <div class="flex gap-4">
+                <a href="/" target="_blank" class="bg-slate-700 hover:bg-slate-600 text-xs font-bold px-4 py-2 rounded-lg transition">Website ansehen</a>
+                <a href="/api/logout" class="bg-red-600 hover:bg-red-500 text-xs font-bold px-4 py-2 rounded-lg transition">Abmelden</a>
+            </div>
+        </div>
+
+        <!-- BEREICH 1: HAUPT-KATEGORIEN VERWALTEN & NEUE HINZUFÜGEN -->
+        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+            <h2 id="catFormTitle" class="text-lg font-bold mb-4 text-yellow-500">1. Haupt-Kategorien verwalten & Neue hinzufügen</h2>
+            
+            <form id="categoryForm" class="space-y-4 mb-6 bg-slate-900 p-4 rounded-lg border border-slate-700">
+                <input type="hidden" id="catId">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Name der Haupt-Kategorie</label>
+                        <input type="text" id="catName" placeholder="z.B. NINTENDO DEALS" required class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Untertitel / Beschreibung</label>
+                        <input type="text" id="catSubtitle" placeholder="z.B. Die besten Switch Spiele" class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Haupt-Affiliate Link</label>
+                        <input type="url" id="catLink" placeholder="https://..." required class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Empfehlungscode (Optional)</label>
+                        <input type="text" id="catRefCode" placeholder="z.B. 27914614" class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Button-Farbe</label>
+                        <select id="catColor" class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-white">
+                            <option value="bg-brand text-slate-950 hover:bg-brandHover">Gelb (LDPlayer)</option>
+                            <option value="bg-purple-600 text-white hover:bg-purple-500">Lila (Plarium)</option>
+                            <option value="bg-blue-600 text-white hover:bg-blue-500">Blau (Impact)</option>
+                            <option value="bg-emerald-600 text-white hover:bg-emerald-500">Grün (Eneba)</option>
+                            <option value="bg-red-600 text-white hover:bg-red-500">Rot</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold px-4 py-2 rounded transition text-xs">
+                        Kategorie Speichern / Hinzufügen
+                    </button>
+                    <button type="button" id="catCancelBtn" onclick="resetCatForm()" class="hidden bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-xs transition">
+                        Abbrechen
+                    </button>
+                </div>
+            </form>
+
+            <h3 class="text-sm font-bold text-slate-300 mb-2">Bestehende Haupt-Kategorien:</h3>
+            <div id="categoryList" class="space-y-2"></div>
+        </div>
+
+        <!-- BEREICH 2: NEUES SPIEL / ANGEBOT HINZUFÜGEN -->
+        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+            <h2 id="productFormTitle" class="text-lg font-bold mb-4 text-yellow-500">2. Neues Spiel / Angebot hinzufügen</h2>
+            
+            <form id="productForm" class="space-y-4">
+                <input type="hidden" id="editProductId">
+                <input type="hidden" id="productImage">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Haupt-Kategorie wählen</label>
+                        <select id="productCategory" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Titel des Spiels / Angebots</label>
+                        <input type="text" id="productTitle" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Beschreibung</label>
+                    <textarea id="productDescription" required rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></textarea>
+                </div>
+
+                <!-- BILD AUSWÄHLEN (PC UPLOAD ODER URL) -->
+                <div class="bg-slate-900 p-4 rounded-lg border border-slate-700 space-y-3">
+                    <label class="block text-xs font-bold text-yellow-500 uppercase">Bild-Optionen:</label>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1">1. Datei direkt vom PC auswählen:</label>
+                        <input type="file" id="filePicker" accept="image/*" class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-300 file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-bold file:bg-yellow-500 file:text-slate-950 hover:file:bg-yellow-400 cursor-pointer">
+                        <p id="uploadStatus" class="text-xs text-yellow-500 mt-1 hidden"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 mb-1">ODER 2. Bild-URL aus dem Internet einfügen:</label>
+                        <input type="url" id="productImageUrl" class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-white text-xs" placeholder="https://images.unsplash.com/...">
+                    </div>
+
+                    <div id="previewContainer" class="hidden">
+                        <p class="text-xs text-slate-400 mb-1">Vorschau:</p>
+                        <img id="imagePreview" class="w-32 h-20 object-cover rounded border border-slate-700">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Affiliate Link für dieses Spiel</label>
+                    <input type="url" id="productLink" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white" value="https://leap.ldplayer.gg/T4VV05TOl">
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold px-6 py-2.5 rounded-lg transition">Spiel Speichern & Veröffentlichen</button>
+                    <button type="button" id="productCancelBtn" onclick="resetProductForm()" class="hidden bg-slate-700 hover:bg-slate-600 px-6 py-2.5 rounded-lg transition">Abbrechen</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- LISTE ALLER SPIELE -->
+        <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+            <h2 class="text-lg font-bold mb-4 text-white">3. Eingetragene Spiele & Angebote</h2>
+            <div id="productList" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <script>
+        let categories = [];
+        let products = [];
+
+        async function checkAuth() {
+            const res = await fetch('/api/auth-status');
+            const data = await res.json();
+            if (!data.loggedIn) window.location.href = '/login.html';
+        }
+
+        async function loadAdminData() {
+            const res = await fetch('/api/data');
+            const data = await res.json();
+
+            categories = data.categories || [];
+            products = data.products || [];
+
+            renderCategoryList();
+            renderCategoryDropdown();
+            renderProductList();
+        }
+
+        // --- KATEGORIEN VERWALTEN ---
+        function renderCategoryList() {
+            const container = document.getElementById('categoryList');
+            if (categories.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500">Keine Haupt-Kategorien vorhanden.</p>`;
+                return;
+            }
+
+            container.innerHTML = categories.map(c => `
+                <div class="bg-slate-900 p-3 rounded flex justify-between items-center border border-slate-700">
+                    <div>
+                        <strong class="text-white text-sm">${escapeHtml(c.name)}</strong>
+                        <span class="text-xs text-slate-400 ml-2">(${escapeHtml(c.subtitle || 'Kein Untertitel')})</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editCategory('${c.id}')" class="bg-blue-600 hover:bg-blue-500 text-xs px-2.5 py-1 rounded">Bearbeiten</button>
+                        <button onclick="deleteCategory('${c.id}')" class="bg-red-600 hover:bg-red-500 text-xs px-2.5 py-1 rounded">Löschen</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCategoryDropdown() {
+            const select = document.getElementById('productCategory');
+            select.innerHTML = categories.map(c => `
+                <option value="${c.id}">${escapeHtml(c.name)}</option>
+            `).join('');
+        }
+
+        document.getElementById('categoryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const catData = {
+                id: document.getElementById('catId').value,
+                name: document.getElementById('catName').value,
+                subtitle: document.getElementById('catSubtitle').value,
+                link: document.getElementById('catLink').value,
+                refCode: document.getElementById('catRefCode').value,
+                btnColor: document.getElementById('catColor').value
+            };
+
+            await fetch('/api/admin/categories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(catData)
+            });
+
+            resetCatForm();
+            loadAdminData();
+        });
+
+        function editCategory(id) {
+            const cat = categories.find(c => c.id === id);
+            if (!cat) return;
+
+            document.getElementById('catId').value = cat.id;
+            document.getElementById('catName').value = cat.name;
+            document.getElementById('catSubtitle').value = cat.subtitle || '';
+            document.getElementById('catLink').value = cat.link;
+            document.getElementById('catRefCode').value = cat.refCode || '';
+            document.getElementById('catColor').value = cat.btnColor || 'bg-brand text-slate-950';
+
+            document.getElementById('catFormTitle').innerText = '1. Haupt-Kategorie bearbeiten';
+            document.getElementById('catCancelBtn').classList.remove('hidden');
+        }
+
+        function resetCatForm() {
+            document.getElementById('catId').value = '';
+            document.getElementById('categoryForm').reset();
+            document.getElementById('catFormTitle').innerText = '1. Haupt-Kategorien verwalten & Neue hinzufügen';
+            document.getElementById('catCancelBtn').classList.add('hidden');
+        }
+
+        async function deleteCategory(id) {
+            if (confirm('Achtung: Beim Löschen dieser Haupt-Kategorie werden auch alle Spiele gelöscht, die dieser Kategorie zugewiesen sind!')) {
+                await fetch(`/api/admin/categories/${id}`, { method: 'DELETE' });
+                loadAdminData();
+            }
+        }
+
+        // --- BILD-UPLOAD (DATEI WÄHLEN) ---
+        document.getElementById('filePicker').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const uploadStatus = document.getElementById('uploadStatus');
+            uploadStatus.innerText = "Lade Bild hoch...";
+            uploadStatus.classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const res = await fetch('/api/admin/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ imageBase64: reader.result })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('productImage').value = data.imageUrl;
+                    document.getElementById('productImageUrl').value = data.imageUrl;
+                    document.getElementById('imagePreview').src = data.imageUrl;
+                    document.getElementById('previewContainer').classList.remove('hidden');
+                    uploadStatus.innerText = "Bild erfolgreich hochgeladen!";
+                } else {
+                    uploadStatus.innerText = "Upload-Fehler!";
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('productImageUrl').addEventListener('input', (e) => {
+            const url = e.target.value;
+            if (url) {
+                document.getElementById('productImage').value = url;
+                document.getElementById('imagePreview').src = url;
+                document.getElementById('previewContainer').classList.remove('hidden');
+            }
+        });
+
+        // --- PRODUKTE VERWALTEN ---
+        function renderProductList() {
+            const list = document.getElementById('productList');
+            if (products.length === 0) {
+                list.innerHTML = `<p class="text-slate-400 text-sm">Keine Spiele vorhanden.</p>`;
+                return;
+            }
+
+            list.innerHTML = products.map(p => {
+                const catObj = categories.find(c => c.id === p.categoryId);
+                const catName = catObj ? catObj.name : 'Allgemein';
+
+                return `
+                    <div class="bg-slate-900 p-4 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border border-slate-700">
+                        <img src="${p.image}" class="w-20 h-16 object-cover rounded">
+                        <div class="flex-1">
+                            <span class="inline-block bg-yellow-500/20 text-yellow-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase mb-1">${escapeHtml(catName)}</span>
+                            <h3 class="font-bold text-white">${escapeHtml(p.title)}</h3>
+                            <p class="text-xs text-slate-400">${escapeHtml(p.description)}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editProduct('${p.id}')" class="bg-blue-600 hover:bg-blue-500 text-xs px-3 py-1.5 rounded">Bearbeiten</button>
+                            <button onclick="deleteProduct('${p.id}')" class="bg-red-600 hover:bg-red-500 text-xs px-3 py-1.5 rounded">Löschen</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editProductId').value;
+            const imgVal = document.getElementById('productImage').value || document.getElementById('productImageUrl').value;
+
+            if (!imgVal) {
+                alert("Bitte wähle ein Bild aus oder gib eine Bild-URL ein!");
+                return;
+            }
+
+            const productData = {
+                categoryId: document.getElementById('productCategory').value,
+                title: document.getElementById('productTitle').value,
+                description: document.getElementById('productDescription').value,
+                image: imgVal,
+                link: document.getElementById('productLink').value
+            };
+
+            const url = id ? `/api/admin/products/${id}` : '/api/admin/products';
+            const method = id ? 'PUT' : 'POST';
+
+            await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productData)
+            });
+
+            resetProductForm();
+            loadAdminData();
+        });
+
+        function editProduct(id) {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+
+            document.getElementById('editProductId').value = p.id;
+            document.getElementById('productCategory').value = p.categoryId;
+            document.getElementById('productTitle').value = p.title;
+            document.getElementById('productDescription').value = p.description;
+            document.getElementById('productImage').value = p.image;
+            document.getElementById('productImageUrl').value = p.image;
+            document.getElementById('productLink').value = p.link;
+
+            document.getElementById('imagePreview').src = p.image;
+            document.getElementById('previewContainer').classList.remove('hidden');
+
+            document.getElementById('productFormTitle').innerText = '2. Spiel bearbeiten';
+            document.getElementById('productCancelBtn').classList.remove('hidden');
+        }
+
+        function resetProductForm() {
+            document.getElementById('editProductId').value = '';
+            document.getElementById('productImage').value = '';
+            document.getElementById('productForm').reset();
+            document.getElementById('previewContainer').classList.add('hidden');
+            document.getElementById('uploadStatus').classList.add('hidden');
+            document.getElementById('productFormTitle').innerText = '2. Neues Spiel / Angebot hinzufügen';
+            document.getElementById('productCancelBtn').classList.add('hidden');
+        }
+
+        async function deleteProduct(id) {
+            if (confirm('Spiel wirklich löschen?')) {
+                await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
+                loadAdminData();
+            }
+        }
+
+        function escapeHtml(str) {
+            return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        checkAuth();
+        loadAdminData();
+    </script>
+</body>
+</html>
