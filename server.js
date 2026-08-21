@@ -109,7 +109,6 @@ app.post('/api/admin/categories', requireAuth, (req, res) => {
 
     const currentData = getData();
     const catId = id ? id.trim() : name.toLowerCase().replace(/[^a-z0-9]/g, '');
-
     const existingIndex = currentData.categories.findIndex(c => c.id === catId);
 
     const categoryData = {
@@ -208,10 +207,12 @@ app.delete('/api/admin/products/:id', requireAuth, (req, res) => {
     }
 });
 
+// Hauptseite ausliefern
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Server starten
 app.listen(PORT, () => {
     console.log(`Server läuft auf Port ${PORT}`);
 });
