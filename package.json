@@ -1,0 +1,13 @@
+{
+  "name": "ldplayer-gaming-site",
+  "version": "1.0.0",
+  "description": "Dynamic Gaming Affiliate Landing Page",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  }
+}
