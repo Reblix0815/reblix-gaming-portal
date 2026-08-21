@@ -1,0 +1,70 @@
+{
+  "categories": [
+    {
+      "id": "ldplayer",
+      "name": "LDPLAYER",
+      "subtitle": "Spiele deine Lieblings-Handyspiele flüssig am PC",
+      "link": "https://leap.ldplayer.gg/T4VV05TOl",
+      "refCode": "27914614",
+      "btnColor": "bg-brand text-slate-950 hover:bg-brandHover"
+    },
+    {
+      "id": "plarium",
+      "name": "PLARIUM GAMES (RAID & CO)",
+      "subtitle": "Top Gratis-PC & Mobile-Spiele mit High-End Grafik",
+      "link": "https://leap.ldplayer.gg/T4VV05TOl",
+      "refCode": "",
+      "btnColor": "bg-purple-600 text-white hover:bg-purple-500"
+    },
+    {
+      "id": "impact",
+      "name": "IMPACT GAMING HARDWARE",
+      "subtitle": "Exklusive Angebote für Gaming-Equipment & Hardware",
+      "link": "https://leap.ldplayer.gg/T4VV05TOl",
+      "refCode": "",
+      "btnColor": "bg-blue-600 text-white hover:bg-blue-500"
+    },
+    {
+      "id": "eneba",
+      "name": "ENEBA GAME-KEYS & GUTHABEN",
+      "subtitle": "Günstige Steam-Keys, V-Bucks & Guthabenkarten",
+      "link": "https://leap.ldplayer.gg/T4VV05TOl",
+      "refCode": "",
+      "btnColor": "bg-emerald-600 text-white hover:bg-emerald-500"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "categoryId": "ldplayer",
+      "title": "PUBG Mobile auf PC spielen",
+      "description": "Genieße PUBG Mobile in 120 FPS, erstklassiger Tastatur-Steuerung und ohne Ruckler.",
+      "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80",
+      "link": "https://leap.ldplayer.gg/T4VV05TOl"
+    },
+    {
+      "id": "2",
+      "categoryId": "plarium",
+      "title": "RAID: Shadow Legends",
+      "description": "Sammle hunderte Champions und erlebe epische RPG-Schlachten kostenlos am PC.",
+      "image": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&auto=format&fit=crop&q=80",
+      "link": "https://leap.ldplayer.gg/T4VV05TOl"
+    },
+    {
+      "id": "3",
+      "categoryId": "impact",
+      "title": "Razer Gaming Hardware Deals",
+      "description": "Sichere dir bis zu 30% Rabatt auf präzise Gaming-Mäuse, Tastaturen und Headsets.",
+      "image": "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800&auto=format&fit=crop&q=80",
+      "link": "https://leap.ldplayer.gg/T4VV05TOl"
+    },
+    {
+      "id": "4",
+      "categoryId": "eneba",
+      "title": "Fortnite V-Bucks & Gift Cards",
+      "description": "Kaufe Guthabenkarten und Game-Keys mit bis zu 20% Rabatt.",
+      "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&auto=format&fit=crop&q=80",
+      "link": "https://leap.ldplayer.gg/T4VV05TOl"
+    }
+  ]
+}
